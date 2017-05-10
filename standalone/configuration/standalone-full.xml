@@ -1,6 +1,7 @@
-<?xml version="1.0" ?>
+<?xml version='1.0' encoding='UTF-8'?>
 
 <server xmlns="urn:jboss:domain:4.2">
+
     <extensions>
         <extension module="org.jboss.as.clustering.infinispan"/>
         <extension module="org.jboss.as.connector"/>
@@ -32,6 +33,8 @@
         <extension module="org.wildfly.extension.undertow"/>
         <extension module="org.wildfly.iiop-openjdk"/>
     </extensions>
+
+
     <management>
         <security-realms>
             <security-realm name="ManagementRealm">
@@ -86,19 +89,108 @@
             </role-mapping>
         </access-control>
     </management>
+
     <profile>
         <subsystem xmlns="urn:jboss:domain:logging:3.0">
             <console-handler name="CONSOLE">
-                <level name="INFO"/>
                 <formatter>
                     <named-formatter name="COLOR-PATTERN"/>
                 </formatter>
+                <target name="System.out"/>
             </console-handler>
             <periodic-rotating-file-handler name="FILE" autoflush="true">
                 <formatter>
                     <named-formatter name="PATTERN"/>
                 </formatter>
                 <file relative-to="jboss.server.log.dir" path="server.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="SQLLOG" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="sql-log.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="SQL_HIBERNATE_DDL" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="sql-hiberate-ddl.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="BEERPOINTS_LOG" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="beer_points.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="API_RHIEMER_LOG" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="api_rhiemer.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="REST_SERVER_LOG" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="rest_server.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="CDI_LOG" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="cdi.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="CDI_CREATE_CLASS_LOG" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="cdi_create_class.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="ERROR_DEBUG_LOG" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="erro-debug.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="REST_RESOURCE_LOG" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="rest-resource.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="DBUNIT_LOG" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="dbunit.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="MYSQL_JDBC_LOG" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="mysql-jdbc.log"/>
                 <suffix value=".yyyy-MM-dd"/>
                 <append value="true"/>
             </periodic-rotating-file-handler>
@@ -110,6 +202,82 @@
             </logger>
             <logger category="sun.rmi">
                 <level name="WARN"/>
+            </logger>
+            <logger category="br.com.rhiemer.api.cdi.extension.BeanDiscoveryExtensionCDI" use-parent-handlers="false">
+                <level name="INFO"/>
+                <handlers>
+                    <handler name="CONSOLE"/>
+                    <handler name="CDI_CREATE_CLASS_LOG"/>
+                </handlers>
+            </logger>
+            <logger category="org.jboss.weld" use-parent-handlers="false">
+                <level name="INFO"/>
+                <handlers>
+                    <handler name="CONSOLE"/>
+                    <handler name="CDI_LOG"/>
+                </handlers>
+            </logger>
+            <logger category="org.hibernate.SQL" use-parent-handlers="false">
+                <level name="DEBUG"/>
+                <handlers>
+                    <handler name="CONSOLE"/>
+                    <handler name="SQLLOG"/>
+                </handlers>
+            </logger>
+            <logger category="org.hibernate.tool.hbm2ddl" use-parent-handlers="false">
+                <level name="DEBUG"/>
+                <handlers>
+                    <handler name="CONSOLE"/>
+                    <handler name="SQL_HIBERNATE_DDL"/>
+                </handlers>
+            </logger>
+            <logger category="br.com.rhiemer.beerpoints" use-parent-handlers="false">
+                <level name="TRACE"/>
+                <handlers>
+                    <handler name="CONSOLE"/>
+                    <handler name="BEERPOINTS_LOG"/>
+                </handlers>
+            </logger>
+            <logger category="br.com.rhiemer.api" use-parent-handlers="false">
+                <level name="TRACE"/>
+                <handlers>
+                    <handler name="CONSOLE"/>
+                    <handler name="API_RHIEMER_LOG"/>
+                </handlers>
+            </logger>
+            <logger category="br.com.rhiemer.api.rest.filter.log" use-parent-handlers="false">
+                <level name="TRACE"/>
+                <handlers>
+                    <handler name="CONSOLE"/>
+                    <handler name="REST_SERVER_LOG"/>
+                </handlers>
+            </logger>
+            <logger category="br.com.rhiemer.api.rest.resources.list" use-parent-handlers="false">
+                <level name="TRACE"/>
+                <handlers>
+                    <handler name="CONSOLE"/>
+                    <handler name="REST_RESOURCE_LOG"/>
+                </handlers>
+            </logger>
+            <logger category="erro.debug" use-parent-handlers="false">
+                <level name="ERROR"/>
+                <handlers>
+                    <handler name="CONSOLE"/>
+                    <handler name="ERROR_DEBUG_LOG"/>
+                </handlers>
+            </logger>
+            <logger category="org.dbunit" use-parent-handlers="false">
+                <level name="TRACE"/>
+                <handlers>
+                    <handler name="DBUNIT_LOG"/>
+                </handlers>
+            </logger>
+            <logger category="com.mysql.jdbc" use-parent-handlers="false">
+                <level name="TRACE"/>
+                <handlers>
+                    <handler name="CONSOLE"/>
+                    <handler name="MYSQL_JDBC_LOG"/>
+                </handlers>
             </logger>
             <root-logger>
                 <level name="INFO"/>
@@ -147,9 +315,25 @@
                         <password>sa</password>
                     </security>
                 </datasource>
+                <datasource jndi-name="java:/ds.beerpoints" pool-name="beerpointsDS" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:mysql://localhost:3306/beerpoints</connection-url>
+                    <driver>com.mysql</driver>
+                    <transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
+                    <pool>
+                        <min-pool-size>0</min-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </pool>
+                    <security>
+                        <security-domain>scd.beerpoints</security-domain>
+                    </security>
+                </datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+                    </driver>
+                    <driver name="com.mysql" module="com.mysql">
+                        <xa-datasource-class>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</xa-datasource-class>
                     </driver>
                 </drivers>
             </datasources>
@@ -158,7 +342,13 @@
             <deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000" runtime-failure-causes-rollback="${jboss.deployment.scanner.rollback.on.failure:false}"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ee:4.0">
-            <spec-descriptor-property-replacement>false</spec-descriptor-property-replacement>
+            <global-modules>
+                <module name="org.jboss.xnio" slot="main"/>
+                <module name="org.jboss.remote-naming" slot="main"/>
+                <module name="org.jboss.ejb-client" slot="main"/>
+            </global-modules>
+            <spec-descriptor-property-replacement>true</spec-descriptor-property-replacement>
+            <jboss-descriptor-property-replacement>true</jboss-descriptor-property-replacement>
             <concurrent>
                 <context-services>
                     <context-service name="default" jndi-name="java:jboss/ee/concurrency/context/default" use-transaction-setup-provider="true"/>
@@ -328,7 +518,7 @@
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
-                <connection-factory name="RemoteConnectionFactory" connectors="http-connector" entries="java:jboss/exported/jms/RemoteConnectionFactory"/>
+                <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
                 <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa"/>
             </server>
         </subsystem>
@@ -380,6 +570,15 @@
                         <auth-module code="Dummy"/>
                     </authentication-jaspi>
                 </security-domain>
+                <security-domain name="scd.beerpoints" cache-type="default">
+                    <authentication>
+                        <login-module code="SecureIdentity" flag="required">
+                            <module-option name="username" value="root"/>
+                            <module-option name="password" value="6f8e652f571678f2"/>
+                            <module-option name="managedConnectionFactoryName" value="jboss.jca:name=ds.beerpoints,service=LocalTxCM"/>
+                        </login-module>
+                    </authentication>
+                </security-domain>
             </security-domains>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:transactions:3.0">
@@ -397,6 +596,7 @@
                 <https-listener name="https" socket-binding="https" security-realm="ApplicationRealm" enable-http2="true"/>
                 <host name="default-host" alias="localhost">
                     <location name="/" handler="welcome-content"/>
+                    <access-log pattern="%{time,yyyy-MM-dd HH:mm:ss.S Z} %h %l %u %r %s %b %S %T" prefix="localhost_access_log" suffix=".log"/>
                     <filter-ref name="server-header"/>
                     <filter-ref name="x-powered-by-header"/>
                 </host>
@@ -425,6 +625,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:weld:3.0"/>
     </profile>
+
     <interfaces>
         <interface name="management">
             <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
@@ -436,6 +637,7 @@
             <inet-address value="${jboss.bind.address.unsecure:127.0.0.1}"/>
         </interface>
     </interfaces>
+
     <socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
         <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
         <socket-binding name="management-https" interface="management" port="${jboss.management.https.port:9993}"/>
@@ -450,4 +652,5 @@
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
+
 </server>
