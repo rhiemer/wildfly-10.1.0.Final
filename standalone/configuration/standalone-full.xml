@@ -316,7 +316,7 @@
                     </security>
                 </datasource>
                 <datasource jndi-name="java:/ds.beerpoints" pool-name="beerpointsDS" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:mysql://localhost:3306/beerpoints</connection-url>
+                    <connection-url>jdbc:mysql://mysql:3306/beerpoints</connection-url>
                     <driver>com.mysql</driver>
                     <transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
                     <pool>
